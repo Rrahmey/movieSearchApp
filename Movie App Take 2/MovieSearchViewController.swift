@@ -25,10 +25,22 @@ class MovieSearchViewController: UICollectionViewController {
         return moviesArray.count
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "movieDetail" {
+            if let destVC = segue.destination as? MovieDetailViewController, let indexPath = collectionView?.indexPathsForSelectedItems {
+                let cell = collectionView?.cellForItem(at: indexPath[0]) as? MovieCollectionViewCell
+                destVC.imdbID = moviesArray[indexPath[0].item].imdbID
+                if let image = cell?.imageView.image {
+                    destVC.posterImage = image
+                }
+            }
+        }
+    }
+    
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "movieItem", for: indexPath) as! MovieCollectionViewCell
-        APIClient.loadImageFromUrl(url: moviesArray[indexPath.row].posterURL, completion: { (image) in
+        APIClient.loadImageFromUrl(url: moviesArray[indexPath.item].posterURL, completion: { (image) in
             cell.imageView.image = image
         })
         

@@ -14,6 +14,7 @@ class Movie {
     var title: String
     var year: String
     var imdbID:String
+    
    
     
     init(dict: [String:Any]) {
